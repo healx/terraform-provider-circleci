@@ -4,7 +4,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/terraform"
 
-	"github.com/mrolla/terraform-provider-circleci/circleci/client"
+	"github.com/healx/terraform-provider-circleci/circleci/client"
 )
 
 func Provider() terraform.ResourceProvider {

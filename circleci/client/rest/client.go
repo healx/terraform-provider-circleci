@@ -51,7 +51,7 @@ func (c *Client) NewRequest(method string, u *url.URL, payload interface{}) (req
 
 	req.Header.Set("Circle-Token", c.circleToken)
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("User-Agent", "mrolla/terraform-provider-circleci")
+	req.Header.Set("User-Agent", "healx/terraform-provider-circleci")
 	if payload != nil {
 		req.Header.Set("Content-Type", "application/json")
 	}

@@ -12,7 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/terraform"
 	"github.com/stretchr/testify/assert"
 
-	client "github.com/mrolla/terraform-provider-circleci/circleci/client"
+	client "github.com/healx/terraform-provider-circleci/circleci/client"
 )
 
 func TestAccCircleCIEnvironmentVariableOrganizationNotSet(t *testing.T) {
@@ -262,7 +262,7 @@ func testCircleCIEnvironmentVariableNoOrgStateDataProviderOrgV1(organization, pr
 	}
 }
 
-func TestCircleCIEnvironmentVariableResourceOrgStateUpgradeV0(t *testing.T) {
+func TestAccCircleCIEnvironmentVariableResourceOrgStateUpgradeV0(t *testing.T) {
 	project := os.Getenv("CIRCLECI_PROJECT")
 	envName := "TEST_" + acctest.RandString(8)
 	organization := os.Getenv("TEST_CIRCLECI_ORGANIZATION")
@@ -282,7 +282,7 @@ func TestCircleCIEnvironmentVariableResourceOrgStateUpgradeV0(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
-func TestCircleCIEnvironmentVariableProviderOrgStateUpgradeV0(t *testing.T) {
+func TestAccCircleCIEnvironmentVariableProviderOrgStateUpgradeV0(t *testing.T) {
 	project := os.Getenv("CIRCLECI_PROJECT")
 	envName := "TEST_" + acctest.RandString(8)
 	organization := os.Getenv("TEST_CIRCLECI_ORGANIZATION")
