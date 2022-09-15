@@ -1,7 +1,7 @@
 # CircleCI Terraform provider
 
-[![Build Status](https://circleci.com/gh/mrolla/terraform-provider-circleci.svg?style=shield)](https://circleci.com/gh/mrolla/terraform-provider-circleci/tree/master)
-[![Go Report Card](https://goreportcard.com/badge/github.com/mrolla/terraform-provider-circleci)](https://goreportcard.com/badge/github.com/mrolla/terraform-provider-circleci)
+[![Build Status](https://circleci.com/gh/healx/terraform-provider-circleci.svg?style=shield)](https://circleci.com/gh/healx/terraform-provider-circleci/tree/master)
+[![Go Report Card](https://goreportcard.com/badge/github.com/healx/terraform-provider-circleci)](https://goreportcard.com/badge/github.com/healx/terraform-provider-circleci)
 
 - Website: https://www.terraform.io
 - [![Gitter chat](https://badges.gitter.im/hashicorp-terraform/Lobby.png)](https://gitter.im/hashicorp-terraform/Lobby)
@@ -47,4 +47,4 @@ resource "circleci_environment_variable" "from_terraform" {
 [third party plugins]: https://www.terraform.io/docs/configuration/providers.html#third-party-plugins
 [terraform]: https://www.terraform.io/downloads.html
 [go]: https://golang.org/doc/install
-[release page]: https://github.com/mrolla/terraform-provider-circleci/releases
+[release page]: https://github.com/healx/terraform-provider-circleci/releases

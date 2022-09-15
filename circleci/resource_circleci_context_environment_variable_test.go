@@ -9,7 +9,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/terraform"
 
-	client "github.com/mrolla/terraform-provider-circleci/circleci/client"
+	client "github.com/healx/terraform-provider-circleci/circleci/client"
+	"github.com/healx/terraform-provider-circleci/circleci/template"
 )
 
 func TestAccCircleCIContextEnvironmentVariable_basic(t *testing.T) {
@@ -21,7 +22,7 @@ func TestAccCircleCIContextEnvironmentVariable_basic(t *testing.T) {
 		CheckDestroy: testAccCheckCircleCIContextEnvironmentVariableDestroy,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccCircleCIContextEnvironmentVariable_basic,
+				Config: template.ParseRandName(testAccCircleCIContextEnvironmentVariable_basic),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCircleCIContextEnvironmentVariableExists("circleci_context_environment_variable.foo", variable),
 					testAccCheckCircleCIContextEnvironmentVariableAttributes_basic(variable),
@@ -43,7 +44,7 @@ func TestAccCircleCIContextEnvironmentVariable_update(t *testing.T) {
 		CheckDestroy: testAccCheckCircleCIContextEnvironmentVariableDestroy,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccCircleCIContextEnvironmentVariable_basic,
+				Config: template.ParseRandName(testAccCircleCIContextEnvironmentVariable_basic),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCircleCIContextEnvironmentVariableExists("circleci_context_environment_variable.foo", variable),
 					testAccCheckCircleCIContextEnvironmentVariableAttributes_basic(variable),
@@ -53,7 +54,7 @@ func TestAccCircleCIContextEnvironmentVariable_update(t *testing.T) {
 				),
 			},
 			{
-				Config: testAccCircleCIContextEnvironmentVariable_update,
+				Config: template.ParseRandName(testAccCircleCIContextEnvironmentVariable_update),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCircleCIContextEnvironmentVariableExists("circleci_context_environment_variable.foo", variable),
 					testAccCheckCircleCIContextEnvironmentVariableAttributes_update(variable),
@@ -75,7 +76,7 @@ func TestAccCircleCIContextEnvironmentVariable_import(t *testing.T) {
 		CheckDestroy: testAccCheckCircleCIContextEnvironmentVariableDestroy,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccCircleCIContextEnvironmentVariable_basic,
+				Config: template.ParseRandName(testAccCircleCIContextEnvironmentVariable_basic),
 				Check:  testAccCheckCircleCIContextExists("circleci_context.foo", context),
 			},
 			{
@@ -117,20 +118,21 @@ func TestAccCircleCIContextEnvironmentVariable_import(t *testing.T) {
 }
 
 func TestAccCircleCIContextEnvironmentVariable_import_name(t *testing.T) {
+	cfg, randName := template.ParseRandNameAndReturn(testAccCircleCIContextEnvironmentVariable_basic)
 	resource.Test(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
 		Providers:    testAccOrgProviders,
 		CheckDestroy: testAccCheckCircleCIContextEnvironmentVariableDestroy,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccCircleCIContextEnvironmentVariable_basic,
+				Config: cfg,
 			},
 			{
 				ResourceName: "circleci_context_environment_variable.foo",
 				ImportStateId: fmt.Sprintf(
 					"%s/%s/%s",
 					os.Getenv("TEST_CIRCLECI_ORGANIZATION"),
-					"terraform-test",
+					fmt.Sprintf("terraform-test-%s", randName),
 					"VAR",
 				),
 				PreConfig: func() {
@@ -219,7 +221,7 @@ func testAccCheckCircleCIContextEnvironmentVariableAttributes_update(variable *a
 
 const testAccCircleCIContextEnvironmentVariable_basic = `
 resource "circleci_context" "foo" {
-	name = "terraform-test"
+	name = "terraform-test-{{.randName}}"
 }
 
 resource "circleci_context_environment_variable" "foo" {
@@ -231,7 +233,7 @@ resource "circleci_context_environment_variable" "foo" {
 
 const testAccCircleCIContextEnvironmentVariable_update = `
 resource "circleci_context" "foo" {
-	name = "terraform-test"
+	name = "terraform-test-{{.randName}}"
 }
 
 resource "circleci_context_environment_variable" "foo" {

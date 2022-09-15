@@ -1,4 +1,4 @@
-module github.com/mrolla/terraform-provider-circleci
+module github.com/healx/terraform-provider-circleci
 
 go 1.17
 
