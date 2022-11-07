@@ -7,7 +7,7 @@ import (
 	"github.com/CircleCI-Public/circleci-cli/api"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 
-	client "github.com/mrolla/terraform-provider-circleci/circleci/client"
+	client "github.com/healx/terraform-provider-circleci/circleci/client"
 )
 
 // NB Magic scheduled actor ID
