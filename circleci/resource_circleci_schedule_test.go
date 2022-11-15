@@ -160,8 +160,16 @@ func testAccCheckCircleCIScheduleAttributes_basic(schedule *api.Schedule) resour
 			return fmt.Errorf("Unexpected schedule days of week: %v", schedule.Timetable.DaysOfWeek)
 		}
 
-		if len(schedule.Parameters) != 2 || schedule.Parameters["foo"] != "bar" || schedule.Parameters["branch"] != "master" {
+		if len(schedule.Parameters) != 2 {
 			return fmt.Errorf("Unxepected schedule parameters: %v", schedule.Parameters)
+		}
+
+		if v, ok := schedule.Parameters["branch"].(string); ok && v != "master" {
+			return fmt.Errorf("Unxepected schedule parameter: %v", schedule.Parameters)
+		}
+
+		if v, ok := schedule.Parameters["foo"].(bool); ok && !v {
+			return fmt.Errorf("Unxepected schedule parameter: %v", schedule.Parameters)
 		}
 
 		return nil
@@ -179,10 +187,10 @@ resource "circleci_schedule" "%[3]s" {
     hours_of_day = [14]
     days_of_week = ["MON"]
     use_scheduling_system = true
-    parameters = {
-        foo = "bar"
+    parameters_json = jsonencode({
+        foo = true
         branch = "master"
-    }
+    })
 }
 `
 	return fmt.Sprintf(template, organization, project, name)
@@ -214,9 +222,14 @@ func testAccCheckCircleCIScheduleAttributes_update(schedule *api.Schedule) resou
 			return fmt.Errorf("Unexpected schedule days of week: %v", schedule.Timetable.DaysOfWeek)
 		}
 
-		if len(schedule.Parameters) != 1 || schedule.Parameters["branch"] != "main" {
+		if len(schedule.Parameters) != 1 {
 			return fmt.Errorf("Unxepected schedule parameters: %v", schedule.Parameters)
 		}
+
+		if v, ok := schedule.Parameters["branch"].(string); ok && v != "main" {
+			return fmt.Errorf("Unxepected schedule parameter: %v", schedule.Parameters)
+		}
+
 
 		return nil
 	}
@@ -233,9 +246,9 @@ resource "circleci_schedule" "%[3]s" {
     hours_of_day = [19]
     days_of_week = ["TUE"]
     use_scheduling_system = false
-    parameters = {
+    parameters_json = jsonencode({
         branch = "main"
-    }
+    })
 }
 `
 	return fmt.Sprintf(template, organization, project, name)
