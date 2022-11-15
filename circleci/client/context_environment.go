@@ -1,6 +1,6 @@
 package client
 
-import "github.com/CircleCI-Public/circleci-cli/api"
+import "github.com/healx/circleci-cli/api"
 
 // CreateOrUpdateContextEnvironmentVariable creates a new context environment variable
 func (c *Client) CreateOrUpdateContextEnvironmentVariable(ctx, variable, value string) error {

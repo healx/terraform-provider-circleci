@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/CircleCI-Public/circleci-cli/api"
-	"github.com/CircleCI-Public/circleci-cli/settings"
+	"github.com/healx/circleci-cli/api"
+	"github.com/healx/circleci-cli/settings"
 
 	"github.com/healx/terraform-provider-circleci/circleci/client/rest"
 )

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/CircleCI-Public/circleci-cli/api"
+	"github.com/healx/circleci-cli/api"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 
 	client "github.com/healx/terraform-provider-circleci/circleci/client"
@@ -128,12 +128,8 @@ func resourceCircleCIScheduleCreate(d *schema.ResourceData, m interface{}) error
 	}
 
 	parsedParams := d.Get("parameters").(map[string]interface{})
-	parameters := make(map[string]string)
-	for k, v := range parsedParams {
-		parameters[k] = v.(string)
-	}
 
-	schedule, err := c.CreateSchedule(organization, project, name, description, timetable, useSchedulingSystem, parameters)
+	schedule, err := c.CreateSchedule(organization, project, name, description, timetable, useSchedulingSystem, parsedParams)
 	if err != nil {
 		return fmt.Errorf("Failed to create schedule: %w", err)
 	}
@@ -232,12 +228,8 @@ func resourceCircleCIScheduleUpdate(d *schema.ResourceData, m interface{}) error
 	}
 
 	parsedParams := d.Get("parameters").(map[string]interface{})
-	parameters := make(map[string]string)
-	for k, v := range parsedParams {
-		parameters[k] = v.(string)
-	}
 
-	_, err := c.UpdateSchedule(id, name, description, timetable, attributionActor, parameters)
+	_, err := c.UpdateSchedule(id, name, description, timetable, attributionActor, parsedParams)
 	if err != nil {
 		return fmt.Errorf("Failed to update schedule: %w", err)
 	}

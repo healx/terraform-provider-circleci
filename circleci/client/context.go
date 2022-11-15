@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/CircleCI-Public/circleci-cli/api"
+	"github.com/healx/circleci-cli/api"
 	"github.com/google/uuid"
 )
 

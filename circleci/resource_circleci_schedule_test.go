@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/CircleCI-Public/circleci-cli/api"
+	"github.com/healx/circleci-cli/api"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/terraform"
 
