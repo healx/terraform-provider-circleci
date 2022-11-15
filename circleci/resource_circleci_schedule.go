@@ -3,6 +3,7 @@ package circleci
 import (
 	"fmt"
 	"strings"
+	"encoding/json"
 
 	"github.com/healx/circleci-cli/api"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
@@ -74,9 +75,9 @@ func resourceCircleCISchedule() *schema.Resource {
 				Description: "Use the scheduled system actor for attribution",
 				Required:    true,
 			},
-			"parameters": {
-				Type:        schema.TypeMap,
-				Description: "Pipeline parameters to pass to created pipelines",
+			"parameters_json": {
+				Type:        schema.TypeString,
+				Description: "JSON encoded pipeline parameters to pass to created pipelines",
 				Optional:    true,
 			},
 		},
@@ -127,7 +128,11 @@ func resourceCircleCIScheduleCreate(d *schema.ResourceData, m interface{}) error
 		DaysOfWeek: daysOfWeek,
 	}
 
-	parsedParams := d.Get("parameters").(map[string]interface{})
+	parsedParams := make(map[string]interface{})
+
+	if v := d.Get("parameters_json").(string); v != "" {
+		err = json.Unmarshal([]byte(v), &parsedParams)
+	}
 
 	schedule, err := c.CreateSchedule(organization, project, name, description, timetable, useSchedulingSystem, parsedParams)
 	if err != nil {
@@ -170,6 +175,11 @@ func resourceCircleCIScheduleRead(d *schema.ResourceData, m interface{}) error {
 		return err
 	}
 
+	parameters_json_b, err := json.Marshal(schedule.Parameters)
+	if err != nil {
+		return err
+	}
+
 	d.Set("organization", organization)
 	d.Set("project", project)
 	d.Set("name", schedule.Name)
@@ -177,7 +187,10 @@ func resourceCircleCIScheduleRead(d *schema.ResourceData, m interface{}) error {
 	d.Set("per_hour", schedule.Timetable.PerHour)
 	d.Set("hours_of_day", schedule.Timetable.HoursOfDay)
 	d.Set("days_of_week", schedule.Timetable.DaysOfWeek)
-	d.Set("parameters", schedule.Parameters)
+
+	if v := string(parameters_json_b); v != "{}" {
+		d.Set("parameters_json", v)
+	}
 
 	if schedule.Actor.ID == scheduledActorID {
 		d.Set("use_scheduling_system", true)
@@ -227,7 +240,14 @@ func resourceCircleCIScheduleUpdate(d *schema.ResourceData, m interface{}) error
 		DaysOfWeek: daysOfWeek,
 	}
 
-	parsedParams := d.Get("parameters").(map[string]interface{})
+	parsedParams := make(map[string]interface{})
+
+	if v := d.Get("parameters_json").(string); v != "" {
+		err := json.Unmarshal([]byte(v), &parsedParams)
+		if err != nil {
+			return err
+		}
+	}
 
 	_, err := c.UpdateSchedule(id, name, description, timetable, attributionActor, parsedParams)
 	if err != nil {

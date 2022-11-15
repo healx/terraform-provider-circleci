@@ -24,7 +24,7 @@ resource "circleci_schedule" "schedule" {
   hours_of_day          = [9,23]
   days_of_week          = ["MON", "TUES"]
   use_scheduling_system = false
-  parameters            = { mycoolparam = false}
+  parameters            = jsonencode({ mycoolparam = false })
 }
 ```
 
@@ -40,7 +40,7 @@ The following arguments are supported:
 * `hours_of_day` - (Required) Which hours of the day to trigger a pipeline.
 * `days_of_week` - (Required) Which days of the week (\"MON\" .. \"SUN\") to trigger a pipeline on.
 * `use_scheduling_system` - (Required) Use the scheduled system actor for attribution.
-* `parameters` - (Optional) Pipeline parameters to pass to created pipelines.
+* `parameters_json` - (Optional) JSON encoded pipeline parameters to pass to created pipelines.
 
 ## Attributes Reference
 
