@@ -24,7 +24,7 @@ resource "circleci_schedule" "schedule" {
   hours_of_day          = [9,23]
   days_of_week          = ["MON", "TUES"]
   use_scheduling_system = false
-  parameters            = jsonencode({ mycoolparam = false })
+  parameters_json       = jsonencode({ mycoolparam = false })
 }
 ```
 
